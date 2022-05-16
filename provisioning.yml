@@ -48,6 +48,7 @@
         name: ['php7.2', 'php7.2-common','apache2','libapache2-mod-php7.2','php7.2-gd','php7.2-mysql']
         state: latest
       become: yes
+
     - name: 'Baixa arquivo de instalação do wordpress'
       get_url:
         url: 'https://br.wordpress.org/wordpress-5.1.13-pt_BR.tar.gz'
@@ -58,12 +59,14 @@
         dest: /var/www/
         remote_src: yes
       become: yes
+
     - name: 'Copia arquivo de configuração do wordpress'
       copy:
         src: "{{wp_install_dir}}/wp-config-sample.php"
         dest: "{{wp_install_dir}}/wp-config.php"
         remote_src: yes
       become: yes
+
     - name: 'Configura banco no arquivo wp-config.php'
       replace:
         path: "{{wp_install_dir}}/wp-config.php"
@@ -76,9 +79,10 @@
         - { regex: 'nome_de_usuario_aqui', value: "{{wp_db_username}}"}
         - { regex: 'senha_aqui', value: "{{wp_db_passwd}}"}
       become: yes
-    - name: 'Copia arquivo de configuração do Apache'
-      copy:
-        src: 'files/000-default.conf'
+
+    - name: 'Configura Apache para servir Wordpress'
+      template:
+        src: 'templates/000-default.conf.j2'
         dest: '/etc/apache2/sites-available/000-default.conf'
       become: yes
       notify:

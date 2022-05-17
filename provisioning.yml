@@ -1,18 +1,9 @@
 ---
 - hosts: database
-
   roles:
     - mysql
 
 - hosts: wordpress
-
-  handlers:
-    - name: restart apache2
-      service:
-        name: apache2
-        state: restarted
-      become: yes
-
   roles:
     - webserver
     - wordpress

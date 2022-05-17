@@ -1,0 +1,6 @@
+---
+  - name: 'Instala Apache e PHP5'
+    apt:
+      name: ['php7.2', 'php7.2-common','apache2','libapache2-mod-php7.2','php7.2-gd','php7.2-mysql']
+      state: latest
+    become: yes
